@@ -46,6 +46,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     }
 
     @Override
+
+    Sorunun olduğu yer Breakpoint koyduğum zaman çağrılmıyor
     public void onBindViewHolder(final ViewHolder holder, final int position) {
        try {
            final Note note = new NoteData().fooNote().get(position);
