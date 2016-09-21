@@ -11,7 +11,16 @@ public class Note {
     public String average;
     public String price;
     public String university_id;
-    private static Note ourInstance = new Note();
+
+    public Note(String id,/*String name,String slug,String average,*/String price,String university_id)
+    {
+        this.id = id;
+       /* this.name = name;
+        this.slug = slug;
+        this.average = average;*/
+        this.price = price;
+        this.university_id = university_id;
+    }
 
     public String  getId() {
         return id;
@@ -53,9 +62,7 @@ public class Note {
 
 
 
-    public static Note getInstance() {
-        return ourInstance;
-    }
+
 
 
 }

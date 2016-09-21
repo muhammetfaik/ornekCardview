@@ -15,4 +15,4 @@
         android:divider="@null"
         android:listSelector="@android:color/transparent"/>
 
-</LinearLayout>
+    </LinearLayout>

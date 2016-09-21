@@ -6,15 +6,24 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
 import com.example.muhammet.mainpagedemo.adapters.NoteListAdapter;
+import com.example.muhammet.mainpagedemo.helpers.HttpGetAsyncTask;
+import com.example.muhammet.mainpagedemo.types.DataListener;
+import com.example.muhammet.mainpagedemo.types.GeneralResponse;
+import com.example.muhammet.mainpagedemo.types.Methods;
 import com.example.muhammet.mainpagedemo.types.Note;
+import com.example.muhammet.mainpagedemo.types.OnTaskCompleted;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -23,32 +32,78 @@ public class MainActivity extends AppCompatActivity {
     private NoteListAdapter mListAdapter;
     private Menu menu;
     private boolean isListView;
+    private ArrayList<Note> noteListClient,notelistPosition = new ArrayList<Note>();
+    private  int i = 0;
+    private List<Note> noteDataset =  new ArrayList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+       // mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 
      //   toolbar = (Toolbar) findViewById(R.id.toolbar);
      //   setUpActionBar();
-
         mRecyclerView = (RecyclerView)findViewById(R.id.notelist);
-        mRecyclerView.setLayoutManager(mStaggeredLayoutManager);
+        mListAdapter = new NoteListAdapter(noteDataset);
         mRecyclerView.setHasFixedSize(true);
+        mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mStaggeredLayoutManager);
 
-        //Hataya Cards Projesinde bak
-        mListAdapter = new NoteListAdapter(this);
-        mListAdapter.setHasStableIds(true);
-        mRecyclerView.setAdapter(mListAdapter);
+           mRecyclerView.setAdapter(mListAdapter);
+
+
+
+        praperNoteData();
+
+
     }
-   /* private void setUpActionBar() {
-        if (toolbar != null) {
-            setActionBar(toolbar);
-            getActionBar().setDisplayHomeAsUpEnabled(false);
-            getActionBar().setDisplayShowTitleEnabled(true);
-            getActionBar().setElevation(7);
-        }
-    }*/
+    public   void  httpclient(final DataListener dataListener) {
+        Type stringType = new TypeToken<GeneralResponse<List<Note>>>() {
+        }.getType();
+        HttpGetAsyncTask task2 = new HttpGetAsyncTask(new OnTaskCompleted<GeneralResponse<List<Note>>>() {
+            @Override
+            public void onTaskCompleted(GeneralResponse<List<Note>> object) {
+                noteListClient = new ArrayList<>(object.getData());
+                dataListener.onDataFetched(noteListClient);
+            }
+        }, stringType);
+        task2.execute(Methods.getLatestNotes);
+
+
+    }
+
+ private void  praperNoteData()
+ {
+     httpclient(new DataListener() {
+         @Override
+         public void onDataFetched(ArrayList<Note> noteList) {
+             notelistPosition = noteList;
+             for (Note note : notelistPosition) {
+               try {
+                   note = new Note(notelistPosition.get(i).id
+                           , notelistPosition.get(i).price, notelistPosition.get(i).university_id);
+                   noteDataset.add(note);
+                   i++;
+               }
+               catch (Exception e)
+               {
+                   Log.e("Error",e.toString());
+               }
+             }
+         }
+     });
+     try {
+         mListAdapter.notifyDataSetChanged();
+     }
+     catch (Exception e)
+     {
+         Log.e("Error",e.toString());
+     }
+ }
+
+
+
 
     private void setUpActionBar() {
         if (toolbar != null) {
@@ -71,13 +126,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_toggle) {
-            toggle();
+           // toggle();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void toggle() {
+   /* private void toggle() {
         MenuItem item = menu.findItem(R.id.action_toggle);
         if (isListView) {
             mStaggeredLayoutManager.setSpanCount(2);
@@ -90,5 +145,5 @@ public class MainActivity extends AppCompatActivity {
             item.setTitle("Show as grid");
             isListView = true;
         }
-    }
+    }*/
 }

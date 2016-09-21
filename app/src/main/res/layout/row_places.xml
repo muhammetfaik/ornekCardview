@@ -13,27 +13,33 @@
       android:layout_width="match_parent"
       android:layout_height="200dp">
 
-      <ImageView
-        android:id="@+id/placeImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:transitionName="tImage" />
 
       <LinearLayout
-        android:id="@+id/mainHolder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:selectableItemBackground"
-        android:orientation="horizontal" />
+          android:id="@+id/placeUnivercityIdHolder"
+          android:layout_width="match_parent"
+          android:layout_height="45dp"
+          android:layout_gravity="center"
+          android:orientation="horizontal"
+          android:transitionName="tNameHolder">
+        <TextView
+            android:id="@+id/placeUnivercityId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+
+      </LinearLayout>
 
       <LinearLayout
-        android:id="@+id/placeNameHolder"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:transitionName="tNameHolder">
+          android:id="@+id/placeNameHolder"
+          android:layout_width="match_parent"
+          android:layout_height="45dp"
+          android:layout_gravity="center_horizontal|top"
+          android:orientation="horizontal"
+          android:transitionName="tNameHolder">
 
         <TextView
           android:id="@+id/placeName"
@@ -45,7 +51,28 @@
           android:textAppearance="?android:attr/textAppearanceLarge"
           android:textColor="@android:color/white" />
 
+
       </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/placePriceHolder"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:orientation="horizontal"
+        android:transitionName="tNameHolder">
+      <TextView
+          android:id="@+id/placePrice"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:gravity="left"
+          android:paddingLeft="10dp"
+          android:textAppearance="?android:attr/textAppearanceLarge"
+          android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
 
     </FrameLayout>
 
